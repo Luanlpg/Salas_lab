@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Salas
+from .models import Agendamentos
+from .models import Logs
+
+
+admin.site.register(Salas)
+admin.site.register(Agendamentos)
+admin.site.register(Logs)
