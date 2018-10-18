@@ -15,16 +15,24 @@ SERVICE_CHOICES = (
 class Salas(models.Model):
     numero = models.IntegerField(primary_key=True, unique=True)
     capacidade = models.IntegerField()
-    status = models.CharField(max_length=30, choices=STATUS_CHOICES)
     obs = models.CharField(max_length=200)
 
 
 class Agendamentos(models.Model):
     titulo = models.CharField(max_length=200)
-    sala = models.ForeignKey(Salas, on_delete=models.CASCADE)
+    sala = models.models.IntegerField()
     data = models.DateTimeField(auto_now_add=True)
-    inicio = models.DateTimeField()
-    termino = models.DateTimeField()
+    inicio = models.DateTimeField(unique=True)
+    termino = models.DateTimeField(unique=True)
+
+    def save(self, *args, **kwargs):
+        inicio = str(self.inicio).split(':')
+        termino = str(self.termino).split(':')
+        if inicio[1] != '00':
+            raise Exception('Schedule out of standard!')
+        if termino[1] != '00':
+            raise Exception('Schedule out of standard!')
+        super(Agendamentos, self).save(*args, **kwargs)
 
 
 class Logs(models.Model):

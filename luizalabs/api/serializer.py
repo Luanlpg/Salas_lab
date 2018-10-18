@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from .models import Salas
-from .models import Agendamentos
-from .models import Logs
+from core.models import Salas
+from core.models import Agendamentos
+from core.models import Logs
 
 class SalasSerializer(serializers.ModelSerializer):
 
@@ -12,7 +12,6 @@ class SalasSerializer(serializers.ModelSerializer):
         fields = [
             'numero',
             'capacidade',
-            'status',
             'obs'
         ]
 

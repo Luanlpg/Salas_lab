@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import Http404
 
-from core.serializer import SalasSerializer
-from core.serializer import AgendamentosSerializer
+from .serializer import SalasSerializer
+from .serializer import AgendamentosSerializer
+
 from core.models import Salas
 from core.models import Agendamentos
 
@@ -22,7 +23,7 @@ class SalasListView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SalasDetailView(APIView):
     serializer_class = SalasSerializer
@@ -51,6 +52,23 @@ class SalasDetailView(APIView):
         sala.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class AgendarView(APIView):
+    serializer_class = AgendamentosSerializer
+
+    def get_sala(self, pk):
+        try:
+            return Salas.objects.get(pk=pk)
+        except Salas.DoesNotExist:
+            raise Http404
+
+    def post(self, request, pk, format=None):
+        sala = self.get_sala(pk)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AgendamentosListView(APIView):
     serializer_class = AgendamentosSerializer
@@ -58,13 +76,6 @@ class AgendamentosListView(APIView):
     def get(self, request, format=None):
         serializer = self.serializer_class(Agendamentos.objects.all(), many=True)
         return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AgendamentosDetailView(APIView):
