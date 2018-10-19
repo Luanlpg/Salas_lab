@@ -39,8 +39,11 @@ Salas_lab é uma API para controle de agendamentos de horários para laboratóri
         13:00(CORRETO)  /  13:02(INCORRETO)
         - A guarde o id de agendamento!!!
 
-- Faça consulta de agendamentos em: `localhost:8000/api/agendamentos/`
-    - Faça consulta de agendamentos com filtro de id do agendamentos em: `localhost:8000/api/agendamentos/<id de agendamento>`
-    - Faça edição(remover, alterar) dos agendamentos em: `localhost:8000/api/agendamentos/<id de agendamento>`
+- Faça consulta de agendamentos em:
+                            `localhost:8000/api/agendamentos/`
+    - Faça consulta de agendamentos com filtro de id do agendamentos em:
+                            `localhost:8000/api/agendamentos/<id de agendamento>`
+    - Faça edição(remover, alterar) dos agendamentos em:
+                            `localhost:8000/api/agendamentos/<id de agendamento>`
 
 - Faça consulta de logs em: `localhost:8000/api/logs/`
