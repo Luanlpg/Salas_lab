@@ -1,16 +1,6 @@
 from django.db import models
 
 
-STATUS_CHOICES = (
-    ('disponivel', 'DISPONIVEL'),
-    ('indisponivel', 'INDISPONIVEL')
-)
-SERVICE_CHOICES = (
-    ('agendamento', 'AGENDAMENTO'),
-    ('cancelamento', 'CANCELAMENTO'),
-    ('cadastro', 'CADASTRO')
-)
-
 
 class Salas(models.Model):
     numero = models.IntegerField(primary_key=True, unique=True)
@@ -20,23 +10,29 @@ class Salas(models.Model):
 
 class Agendamentos(models.Model):
     titulo = models.CharField(max_length=200)
-    sala = models.models.IntegerField()
+    sala = models.IntegerField()
     data = models.DateTimeField(auto_now_add=True)
-    inicio = models.DateTimeField(unique=True)
-    termino = models.DateTimeField(unique=True)
+    inicio = models.DateTimeField()
+    termino = models.DateTimeField()
 
     def save(self, *args, **kwargs):
+        salinha = Agendamentos.objects.filter(sala=self.sala)
         inicio = str(self.inicio).split(':')
         termino = str(self.termino).split(':')
-        if inicio[1] != '00':
-            raise Exception('Schedule out of standard!')
-        if termino[1] != '00':
-            raise Exception('Schedule out of standard!')
+        for i in salinha:
+            print(i.sala)
+            if i.sala == self.sala:
+                if  self.inicio == i.inicio:
+                    raise Exception('schedule already scheduled')
+                if  inicio[1] != '00':
+                    raise Exception('Schedule out of standard!')
+                if termino[1] != '00':
+                    raise Exception('Schedule out of standard!')
         super(Agendamentos, self).save(*args, **kwargs)
 
 
 class Logs(models.Model):
-    sala = models.ForeignKey(Salas, on_delete=models.CASCADE)
+    sala = models.IntegerField()
     log = models.CharField(max_length=200)
     service = models.CharField(max_length=25)
     data = models.DateTimeField(auto_now_add=True)
@@ -47,8 +43,8 @@ class Logs(models.Model):
         """
         options_service = ['AGENDAMENTO',
                             'CANCELAMENTO',
-                            'CADASTRO',
                             'EDIÇÃO',
+                            'CADASTRO',
                             'REMOÇÃO'
                             ]
 

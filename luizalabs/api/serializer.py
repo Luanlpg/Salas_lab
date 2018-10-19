@@ -21,9 +21,22 @@ class AgendamentosSerializer(serializers.ModelSerializer):
         model = Agendamentos
         depth = 1
         fields = [
+            'id',
             'titulo',
             'sala',
             'data',
             'inicio',
             'termino'
+        ]
+
+class LogsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Logs
+        depth = 1
+        fields = [
+            'log',
+            'service',
+            'data',
+            'sala'
         ]
