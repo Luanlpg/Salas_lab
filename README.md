@@ -19,11 +19,11 @@ Salas_lab é uma API para controle de agendamentos de horários para laboratóri
 
 - Rode as migrações do projeto: `python manage.py migrate`
 
-- Rode o servidor local com: `python manage.py runserver`
-
 - Crie um super user com: `python manage.py createsuperuser`
 
 - Para rodar testes: `python manage.py test api.tests`
+
+- Rode o servidor local com: `python manage.py runserver`
 
 ## Navegando pela API
 
